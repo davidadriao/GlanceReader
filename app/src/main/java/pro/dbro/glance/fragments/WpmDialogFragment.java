@@ -1,10 +1,10 @@
 package pro.dbro.glance.fragments;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -26,7 +26,7 @@ public class WpmDialogFragment extends DialogFragment {
 
     public static final int MAX_WPM = 1200;
     public static final int WHOAH_THRESHOLD_WPM = 800;
-    public static final int MIN_WPM = 300;
+    public static final int MIN_WPM = 10;
 
     private View mView;
     private Animation mCurrentAnimation;
@@ -112,6 +112,6 @@ public class WpmDialogFragment extends DialogFragment {
     public void onDismiss(DialogInterface dialog) {
         mBus.post(new WpmSelectedEvent(mWpm));
         GlancePrefsManager.setWpm(getActivity(), mWpm);
-        getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }

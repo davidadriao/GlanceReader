@@ -2,23 +2,21 @@ package pro.dbro.glance.formats;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.text.Html;
-import android.util.Log;
+import android.text.TextUtils;
 
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
-import pro.dbro.glance.SECRETS;
 import pro.dbro.glance.http.TrustManager;
+import timber.log.Timber;
+
+//import pro.dbro.glance.SECRETS;
 
 /**
  * This provides an implementation of {@link pro.dbro.glance.formats.SpritzerMedia}
@@ -51,26 +49,31 @@ public class HtmlPage implements SpritzerMedia {
             initFromJson(result);
     }
 
-    public void setResult(JsonObject result) {
-        initFromJson(result);
+    public boolean setResult(JsonObject result) {
+        return initFromJson(result);
     }
 
-    private void initFromJson(JsonObject json) {
+    private boolean initFromJson(JsonObject json) {
         // Diffbot json format
         // see http://www.diffbot.com/products/automatic/
         if (json == null) {
-            Log.e(TAG, "Error parsing page");
-            return;
+            Timber.e("Error parsing page");
+            return false;
         }
         if (json.has("title"))
-            mTitle   =  json.get("title").getAsString();
+            mTitle = json.get("title").getAsString();
         if (json.has("url"))
-            mUrl     =  json.get("url").getAsString();
-        if (json.has("text"))
-            mContent =  json.get("text").getAsString();
+            mUrl = json.get("url").getAsString();
+        if (json.has("text") && !TextUtils.isEmpty(json.get("text").getAsString()))
+            mContent = json.get("text").getAsString();
+        else {
+            Timber.e("Got json response, but it contained no content text");
+            return false;
+        }
 
         // Sanitize content
         mContent = Html.fromHtml(mContent).toString().replaceAll("\\n+", " ").replaceAll("(?s)<!--.*?-->", "");
+        return true;
     }
 
     /**
@@ -85,15 +88,15 @@ public class HtmlPage implements SpritzerMedia {
      * @throws pro.dbro.glance.formats.UnsupportedFormatException if HTML parsing fails
      */
     public static HtmlPage fromUri(final Context context, String url, final HtmlPageParsedCallback cb) throws UnsupportedFormatException {
-    // Seems to be a bug in Ion setting trust manager
-    // When that's resolved, go back to Ion request
+        // Seems to be a bug in Ion setting trust manager
+        // When that's resolved, go back to Ion request
 //        if (!sSetupTrustManager) {
 //            sSetupTrustManager = TrustManager.setupIonTrustManager(context);
 //        }
         final HtmlPage page = new HtmlPage(null);
         String encodedUrlToParse = Uri.encode(url);
-        String requestUrl = String.format("http://api.diffbot.com/v2/article?url=%s&token=%s", encodedUrlToParse, SECRETS.getDiffbotKey());
-        Log.i(TAG, "Loading url: " + requestUrl);
+        String requestUrl = String.format("http://api.diffbot.com/v2/article?url=%s&token=%s", encodedUrlToParse, "2efef432c72b5a923408e04353c39a7c");
+        Timber.d("Loading url: " + requestUrl);
 //        TrustManager.makeTrustRequest(context, requestUrl, new TrustManager.TrustRequestCallback() {
 //            @Override
 //            public void onSuccess(JsonObject result) {
@@ -112,19 +115,31 @@ public class HtmlPage implements SpritzerMedia {
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
-                    public void onCompleted(Exception e, JsonObject result) {
+                    public void onCompleted(Exception e, final JsonObject result) {
                         if (e != null) {
-                            e.printStackTrace();
-                            Log.e(TAG, "Unable to parse page");
+                            Timber.e(e, "Unable to parse page");
                             return;
                         }
-                        //Log.i(TAG, "Got diffbot result " + result.toString());
-                        page.setResult(result);
 
-                        if (cb != null) {
-                            cb.onPageParsed(page);
+                        //Timber.d("Got diffbot result " + result.toString());
+                        new AsyncTask<JsonObject, Void, HtmlPage>() {
 
-                        }
+                            @Override
+                            protected HtmlPage doInBackground(JsonObject... params) {
+
+                                JsonObject result = params[0];
+                                boolean sucess = page.setResult(result);
+
+                                return sucess ? page : null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(HtmlPage result) {
+                                if (cb != null)
+                                    cb.onPageParsed(result);
+                            }
+
+                        }.execute(result);
                     }
                 });
 
