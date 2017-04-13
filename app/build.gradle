@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 22
     buildToolsVersion '25.0.0'
 
     defaultConfig {
@@ -9,8 +9,6 @@ android {
         targetSdkVersion 22
         versionCode 8
         versionName "2.0.1"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
@@ -19,7 +17,7 @@ android {
             // gradle.properties in the project's root directory
         }
     }
-/*
+
     buildTypes {
         release {
             minifyEnabled false
@@ -28,7 +26,7 @@ android {
             debuggable false
         }
     }
-*/
+
     packagingOptions {
         exclude 'log4j.properties'
     }
@@ -54,27 +52,29 @@ if (project.hasProperty('keyPassword')) {
 }
 
 dependencies {
+    compile 'com.parse:parse-android:1.13.1'
+
+    // Module dependency on ParseUI libraries sources
+    compile 'com.parse:parseui-login-android:0.0.1'
+    compile 'com.parse:parseui-widget-android:0.0.1'
+
     compile 'net.hockeyapp.android:HockeySDK:3.5.0-b.4'
     compile 'com.facebook.rebound:rebound:0.3.6'
     compile 'org.slf4j:slf4j-android:1.7.7'
-    compile group: 'com.google.guava', name: 'guava', version: '19.0'
+    compile group: 'com.google.guava', name: 'guava', version: '18.0'
 
     compile project(":lib")
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // You must install or update the Support Repository through the SDK manager to use this dependency.
-    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:support-v4:22.2.0'
     compile 'com.android.support:design:22.2.0'
     compile 'com.squareup:otto:1.3.4'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.koushikdutta.ion:ion:1.3.8'
     compile 'com.jakewharton.timber:timber:3.1.0'
 
-    // Android JUnit Runner
-    androidTestCompile 'com.android.support.test:runner:0.5'
-// JUnit4 Rules
-    androidTestCompile 'com.android.support.test:rules:0.5'
-// Espresso core
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+
+
 
     compile fileTree('libs')
 }

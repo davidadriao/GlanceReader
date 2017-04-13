@@ -54,7 +54,13 @@ public class FeedFragment extends ListFragment {
     }
 
     public void setupParse() {
-        Parse.initialize(this.getActivity(), "IKXOwtsEGwpJxjD56rloizwwsB4pijEve8nU5wkB", "8K0yHwwEevmCiuuHTjGj7HRhFTzHmycBXXspmnPU");
+        //Parse.initialize(this.getActivity(), "IKXOwtsEGwpJxjD56rloizwwsB4pijEve8nU5wkB", "8K0yHwwEevmCiuuHTjGj7HRhFTzHmycBXXspmnPU");
+        Parse.initialize(new Parse.Configuration.Builder(this.getActivity())
+                .applicationId("glancereader2424")
+                .clientKey("masterkey2424")
+                .server("https://glancereader.herokuapp.com/")
+                .build()
+        );
         sParseSetup = true;
     }
 

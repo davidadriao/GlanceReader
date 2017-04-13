@@ -85,7 +85,13 @@ public class AppSpritzer extends Spritzer {
     }
 
     private void initParse() {
-        Parse.initialize(context, "IKXOwtsEGwpJxjD56rloizwwsB4pijEve8nU5wkB", "8K0yHwwEevmCiuuHTjGj7HRhFTzHmycBXXspmnPU");
+        //Parse.initialize(context, "IKXOwtsEGwpJxjD56rloizwwsB4pijEve8nU5wkB", "8K0yHwwEevmCiuuHTjGj7HRhFTzHmycBXXspmnPU");
+        Parse.initialize(new Parse.Configuration.Builder(context)
+                .applicationId("glancereader2424")
+                .clientKey("masterkey2424")
+                .server("https://glancereader.herokuapp.com/")
+                .build()
+        );
         Parse.enableLocalDatastore(context);
     }
 
