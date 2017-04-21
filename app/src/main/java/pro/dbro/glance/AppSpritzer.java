@@ -3,6 +3,7 @@ package pro.dbro.glance;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.UriPermission;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -17,6 +18,8 @@ import com.parse.Parse;
 import com.squareup.otto.Bus;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import pro.dbro.glance.events.EpubDownloadedEvent;
@@ -29,6 +32,11 @@ import pro.dbro.glance.formats.SpritzerMedia;
 import pro.dbro.glance.formats.UnsupportedFormatException;
 import pro.dbro.glance.lib.Spritzer;
 import timber.log.Timber;
+
+import org.apache.pdfbox.pdfparser.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.pdfbox.text.PDFTextStripper;
 
 /**
  * A higher-level {@link pro.dbro.glance.lib.Spritzer} that operates
@@ -81,6 +89,7 @@ public class AppSpritzer extends Spritzer {
             }
         } else {
             openEpub(uri);
+
         }
     }
 
