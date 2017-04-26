@@ -15,8 +15,31 @@ import java.util.List;
  * Created by Al on 4/14/2017.
  */
 
-public class PDF {
+public class PDF implements SpritzerMedia{
 
 
+    @Override
+    public String getTitle() {
+        return null;
+    }
 
+    @Override
+    public String getAuthor() {
+        return null;
+    }
+
+    @Override
+    public String getChapterTitle(int chapterNumber) {
+        return null;
+    }
+
+    @Override
+    public String loadChapter(int chapterNumber) {
+        return null;
+    }
+
+    @Override
+    public int countChapters() {
+        return 0;
+    }
 }
