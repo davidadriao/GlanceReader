@@ -8,7 +8,9 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 
+import com.tom_roush.pdfbox.contentstream.operator.graphics.StrokePath;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
+import com.tom_roush.pdfbox.pdmodel.PDDocumentInformation;
 import com.tom_roush.pdfbox.text.PDFTextStripper;
 import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
 
@@ -27,6 +29,8 @@ import pro.dbro.glance.FileUtils;
 public class PDF implements SpritzerMedia{
 
     private static String mContent;
+    private static String mTitle = "Untitled";
+    private static PDDocument pdfDoc = null;
 
 
     public static PDF fromUri(Context context, Uri uri) throws UnsupportedFormatException {
@@ -52,20 +56,20 @@ public class PDF implements SpritzerMedia{
 
     public static String getPDFtext(String pdfUri) throws IOException{
         File pdfFile = new File(pdfUri);
-        PDDocument doc = PDDocument.load(pdfFile);
+        pdfDoc = PDDocument.load(pdfFile);
         String parsedText = "";
 
         PDFTextStripper pdfStripper = new PDFTextStripper();
 
         try {
             pdfStripper.setStartPage(0);
-            pdfStripper.setEndPage(1);
-            parsedText = pdfStripper.getText(doc);
+            //pdfStripper.setEndPage(1);
+            parsedText = pdfStripper.getText(pdfDoc);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                if (doc != null) doc.close();
+                if (pdfDoc != null) pdfDoc.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -82,7 +86,11 @@ public class PDF implements SpritzerMedia{
 
     @Override
     public String getTitle() {
-        return "TEST Title";
+        PDDocumentInformation info = pdfDoc.getDocumentInformation();
+        if (info.getTitle() != null) {
+            mTitle = info.getTitle();
+        }
+        return mTitle;
     }
 
     @Override
