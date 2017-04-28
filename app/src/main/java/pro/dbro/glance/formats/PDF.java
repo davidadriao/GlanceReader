@@ -53,17 +53,28 @@ public class PDF implements SpritzerMedia{
     public static String getPDFtext(String pdfUri) throws IOException{
         File pdfFile = new File(pdfUri);
         PDDocument doc = PDDocument.load(pdfFile);
-        String parsedText = "NO TEXT to display but i want to see if this is even working...";
-
-
-        /*
-        PDDocument doc = PDDocument.load(pdfFile);
+        String parsedText = "";
 
         PDFTextStripper pdfStripper = new PDFTextStripper();
 
+        try {
+            pdfStripper.setStartPage(0);
+            pdfStripper.setEndPage(1);
+            parsedText = pdfStripper.getText(doc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (doc != null) doc.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+/*
         String output = new PDFTextStripper().getText(doc);
         return new PDFTextStripper().getText(doc);
-        */
+ */
         return parsedText;
     }
 
@@ -71,7 +82,7 @@ public class PDF implements SpritzerMedia{
 
     @Override
     public String getTitle() {
-        return "";
+        return "TEST Title";
     }
 
     @Override
