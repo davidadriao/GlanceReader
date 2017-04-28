@@ -28,15 +28,13 @@ import pro.dbro.glance.events.NextChapterEvent;
 import pro.dbro.glance.events.SpritzMediaReadyEvent;
 import pro.dbro.glance.formats.Epub;
 import pro.dbro.glance.formats.HtmlPage;
+import pro.dbro.glance.formats.PDF;
 import pro.dbro.glance.formats.SpritzerMedia;
 import pro.dbro.glance.formats.UnsupportedFormatException;
 import pro.dbro.glance.lib.Spritzer;
 import timber.log.Timber;
 
-import org.apache.pdfbox.pdfparser.*;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.PDFRenderer;
-import org.apache.pdfbox.text.PDFTextStripper;
+
 
 /**
  * A higher-level {@link pro.dbro.glance.lib.Spritzer} that operates
@@ -76,7 +74,8 @@ public class AppSpritzer extends Spritzer {
     }
 
     private void openMedia(Uri uri) {
-
+        openPDF(uri);
+        /*
         Timber.d("Opening.." + uri.toString());
 
         if (isHttpUri(uri)) {
@@ -91,6 +90,7 @@ public class AppSpritzer extends Spritzer {
             openEpub(uri);
 
         }
+        */
     }
 
     private void initParse() {
@@ -156,6 +156,17 @@ public class AppSpritzer extends Spritzer {
                     openEpub(Uri.fromFile(file));
                 }
             });
+    }
+
+
+    private void openPDF(Uri pdfUri){
+        try{
+            mMedia = PDF.fromUri(mTarget.getContext().getApplicationContext(), pdfUri);
+            setStaticText(context.getString(R.string.loading));
+            restoreState(false);
+        }catch(UnsupportedFormatException e){
+
+        }
     }
 
     private void openHtmlPage(Uri htmlUri) {
