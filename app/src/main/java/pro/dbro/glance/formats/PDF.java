@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.text.PDFTextStripper;
+import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,8 @@ public class PDF implements SpritzerMedia{
             InputStream epubInputStream = context.getContentResolver().openInputStream(uri);
             String pdfPath = FileUtils.getPath(context, uri);
 
+            PDFBoxResourceLoader.init(context);
+
             mContent = PDF.getPDFtext(pdfPath);
         }catch (IOException e){
 
@@ -49,27 +52,36 @@ public class PDF implements SpritzerMedia{
 
     public static String getPDFtext(String pdfUri) throws IOException{
         File pdfFile = new File(pdfUri);
-
         PDDocument doc = PDDocument.load(pdfFile);
+        String parsedText = "NO TEXT to display but i want to see if this is even working...";
+
+
+        /*
+        PDDocument doc = PDDocument.load(pdfFile);
+
+        PDFTextStripper pdfStripper = new PDFTextStripper();
+
         String output = new PDFTextStripper().getText(doc);
         return new PDFTextStripper().getText(doc);
+        */
+        return parsedText;
     }
 
 
 
     @Override
     public String getTitle() {
-        return null;
+        return "";
     }
 
     @Override
     public String getAuthor() {
-        return null;
+        return "";
     }
 
     @Override
-    public String getChapterTitle(int chapterNumber) {
-        return null;
+    public String getChapterTitle(int ignored) {
+        return "";
     }
 
     @Override
@@ -79,6 +91,6 @@ public class PDF implements SpritzerMedia{
 
     @Override
     public int countChapters() {
-        return 0;
+        return 1;
     }
 }
