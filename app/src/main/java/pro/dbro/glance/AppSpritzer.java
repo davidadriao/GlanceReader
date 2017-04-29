@@ -161,11 +161,12 @@ public class AppSpritzer extends Spritzer {
 
     private void openPDF(Uri pdfUri){
         try{
-            mMedia = PDF.fromUri(mTarget.getContext().getApplicationContext(), pdfUri);
             setStaticText(context.getString(R.string.loading));
+            mMediaUri=(pdfUri);
+            mMedia = PDF.fromUri(mTarget.getContext().getApplicationContext(), pdfUri);
             restoreState(false);
         }catch(UnsupportedFormatException e){
-
+            reportFileUnsupported();
         }
     }
 

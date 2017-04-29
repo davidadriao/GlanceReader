@@ -34,7 +34,6 @@ public class PDF implements SpritzerMedia{
 
 
     public static PDF fromUri(Context context, Uri uri) throws UnsupportedFormatException {
-        //return new PDF(openPDF(context, uri));
         final PDF page = new PDF();
 
         try{
