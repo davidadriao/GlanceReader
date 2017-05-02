@@ -77,7 +77,7 @@ public class AppSpritzer extends Spritzer {
         Timber.d("Opening.." + uri.toString());
 
         if (isHttpUri(uri)) {
-            if (isRemoteEpub(uri)){
+            if (isRemoteEpub(uri)) {
                 Timber.d("Remote epub.." + uri.toString());
                 // Media should be null here
                 openRemoteEpub(uri);
@@ -88,15 +88,15 @@ public class AppSpritzer extends Spritzer {
             openPDF(uri);
         } else {
             openEpub(uri);
-
         }
     }
 
     private boolean isPDF(Uri uri){
         boolean uriIsPDF = false;
-        String uriAsString = uri.toString();
+        String uriAsString = FileUtils.getPath(context, uri);
+        //String uriAsString = uri.toString();
         String fileTypeExtension = uriAsString.substring(uriAsString.lastIndexOf("."));
-        if (fileTypeExtension.equals("pdf")){
+        if (fileTypeExtension.equals(".pdf")){
             uriIsPDF = true;
         }
         return uriIsPDF;
