@@ -85,6 +85,8 @@ public class AppSpritzer extends Spritzer {
             } else {
                 openHtmlPage(uri);
             }
+        } else if(isPDF(uri)){
+            openPDF(uri);
         } else {
             openEpub(uri);
 
