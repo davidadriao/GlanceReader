@@ -93,6 +93,14 @@ public class AppSpritzer extends Spritzer {
         }
     }
 
+    private void isPDF(Uri uri){
+        String uriAsString = uri.toString();
+        String fileTypeExtension = uriAsString.substring(uriAsString.length()-3);
+        if (fileTypeExtension.equals("pdf")){
+            openPDF(uri);
+        }
+    }
+
     private void initParse() {
         //Parse.initialize(context, "IKXOwtsEGwpJxjD56rloizwwsB4pijEve8nU5wkB", "8K0yHwwEevmCiuuHTjGj7HRhFTzHmycBXXspmnPU");
         Parse.initialize(new Parse.Configuration.Builder(context)
