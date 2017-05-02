@@ -74,7 +74,6 @@ public class AppSpritzer extends Spritzer {
     }
 
     private void openMedia(Uri uri) {
-        openPDF(uri);
         Timber.d("Opening.." + uri.toString());
 
         if (isHttpUri(uri)) {
