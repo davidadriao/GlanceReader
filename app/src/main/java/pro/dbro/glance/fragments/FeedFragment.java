@@ -165,7 +165,6 @@ public class FeedFragment extends ListFragment {
                             return;
                         }
                         
-                        JsonObject value = result.getAsJsonObject("value");
                         JsonArray results = result.getAsJsonArray("items");
 
                         if (results.size() == 0) {
