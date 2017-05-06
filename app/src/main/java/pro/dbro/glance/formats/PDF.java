@@ -53,8 +53,8 @@ public class PDF implements SpritzerMedia{
     }
 
 
-    public static String getPDFtext(String pdfUri) throws IOException{
-        File pdfFile = new File(pdfUri);
+    public static String getPDFtext(String pdfUriString) throws IOException{
+        File pdfFile = new File(pdfUriString);
         pdfDoc = PDDocument.load(pdfFile);
         String parsedText = "";
 
@@ -74,10 +74,6 @@ public class PDF implements SpritzerMedia{
             }
         }
 
-/*
-        String output = new PDFTextStripper().getText(doc);
-        return new PDFTextStripper().getText(doc);
- */
         return parsedText;
     }
 
@@ -111,4 +107,6 @@ public class PDF implements SpritzerMedia{
     public int countChapters() {
         return 1;
     }
+
+    public String getmContent() {return mContent;}
 }
