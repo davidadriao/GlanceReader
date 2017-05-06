@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import pro.dbro.glance.AppSpritzer;
@@ -22,7 +23,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.*;
 import android.content.Context;
+import android.widget.TextView;
 
+import com.squareup.otto.Bus;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.text.PDFTextStripper;
 
@@ -42,9 +45,6 @@ public class UnitTestSuite{
     private static final Uri HTML_URI = Uri.parse("http://https://phys.org/news/2017-05-iceland-drills-km-volcano-energy.html");
 
     @Mock
-    Context mockContext;
-
-    @Mock
     PDDocument mockPDDocument;
 
     @Mock
@@ -61,9 +61,15 @@ public class UnitTestSuite{
         assertThat(PDF.getPDFtext(PDF_STRING), is(not("")));
    }
 
+   @Mock
+   Bus mockBus;
+    TextView mockTarget;
+    Context mockContext;
+
    @Test
     public void setMediaUri_ValidUri_ReturnsPDF(){
-       mockSpritzer.setMediaUri(PDF_URI);
+       AppSpritzer spritzer = new AppSpritzer(mockBus, mockTarget, PDF_URI);
+       when(mockTarget.getContext().getApplicationContext()).thenReturn(mockContext);
        assertTrue(mockSpritzer.getMedia() instanceof PDF);
    }
 
