@@ -94,7 +94,6 @@ public class AppSpritzer extends Spritzer {
     private boolean isPDF(Uri uri){
         boolean uriIsPDF = false;
         String uriAsString = FileUtils.getPath(context, uri);
-        //String uriAsString = uri.toString();
         String fileTypeExtension = uriAsString.substring(uriAsString.lastIndexOf("."));
         if (fileTypeExtension.equals(".pdf")){
             uriIsPDF = true;
@@ -172,7 +171,7 @@ public class AppSpritzer extends Spritzer {
         try{
             setStaticText(context.getString(R.string.loading));
             mMediaUri=(pdfUri);
-            mMedia = PDF.fromUri(mTarget.getContext().getApplicationContext(), pdfUri);
+            mMedia = PDF.fromUri(mTarget.getContext().getApplicationContext(), mMediaUri);
             restoreState(false);
         }catch(UnsupportedFormatException e){
             reportFileUnsupported();
