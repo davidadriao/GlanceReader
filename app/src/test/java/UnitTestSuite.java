@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import pro.dbro.glance.AppSpritzer;
+import pro.dbro.glance.FileUtils;
 import pro.dbro.glance.activities.MainActivity;
 import pro.dbro.glance.formats.Epub;
 import pro.dbro.glance.formats.HtmlPage;
@@ -37,7 +38,7 @@ import com.tom_roush.pdfbox.text.PDFTextStripper;
 public class UnitTestSuite{
 
 
-    private static final String PDF_STRING = "../validdata.pdf";
+    private static final String PDF_STRING = "validdata.pdf";
     private static final Uri PDF_URI = Uri.parse("validdata.pdf");
     private static final String PDF_TEXT = "I am text that goes in a pdf";
     private static final Uri EPUB_URI = Uri.parse("http://www.book.epub");
@@ -49,6 +50,9 @@ public class UnitTestSuite{
     @Mock
     AppSpritzer mockSpritzer;
 
+    @Mock
+    Context mockContext;
+
     @Test
     public void isPDF_ValidURI_ReturnsTrue(){
         assertThat(mockSpritzer.isPDF(PDF_URI), is(true));
@@ -57,7 +61,7 @@ public class UnitTestSuite{
     @Test
     public void fromPDF_ValidURI_GetsText() throws UnsupportedFormatException{
         PDF result = PDF.fromUri(mockContext, PDF_URI);
-        assertThat(result.getmContent(),is(""));
+        assertThat(result.getmContent(),is(not("")));
     }
 
    @Test
@@ -65,19 +69,9 @@ public class UnitTestSuite{
         assertThat(PDF.getPDFtext(PDF_STRING), is(not("")));
    }
 
-   @Mock
-   Bus mockBus;
-    TextView mockTarget;
-    Context mockContext;
-    Context mockContext2;
-    Timber mockTimber;
 
    @Test
     public void setMediaUri_ValidUri_ReturnsPDF(){
-       //mockSpritzer.setMediaUri(PDF_URI);
-       /*AppSpritzer spritzer = new AppSpritzer(mockBus, mockTarget, PDF_URI);
-       when(mockTarget.getContext().getApplicationContext()).thenReturn(mockContext2);
-       when(mockTarget.getContext()).thenReturn(mockContext);*/
        SpritzFragment frag = new SpritzFragment();
        frag.feedMediaUriToSpritzer(PDF_URI);
        assertTrue(frag.getSpritzer().getMedia() instanceof PDF);

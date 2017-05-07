@@ -32,6 +32,7 @@ import pro.dbro.glance.formats.PDF;
 import pro.dbro.glance.formats.SpritzerMedia;
 import pro.dbro.glance.formats.UnsupportedFormatException;
 import pro.dbro.glance.lib.Spritzer;
+import pro.dbro.glance.FileUtils;
 import timber.log.Timber;
 
 
