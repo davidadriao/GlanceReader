@@ -12,10 +12,13 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import pro.dbro.glance.AppSpritzer;
+import pro.dbro.glance.activities.MainActivity;
 import pro.dbro.glance.formats.Epub;
 import pro.dbro.glance.formats.HtmlPage;
 import pro.dbro.glance.formats.PDF;
 import pro.dbro.glance.formats.UnsupportedFormatException;
+import pro.dbro.glance.fragments.SpritzFragment;
+import timber.log.Timber;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -33,13 +36,8 @@ import com.tom_roush.pdfbox.text.PDFTextStripper;
 public class UnitTestSuite{
 
 
-    /*
-    Al help how did you test the pdf stuff on your local system? I can't figure
-    out filepaths to non-static parts of the system directroy--Specifically,
-    where the program is STARTING from.
-     */
     private static final String PDF_STRING = "../validdata.pdf";
-    private static final Uri PDF_URI = Uri.parse("D:\\Easy Access/validdata.pdf");
+    private static final Uri PDF_URI = Uri.parse("validdata.pdf");
     private static final String PDF_TEXT = "I am text that goes in a pdf";
     private static final Uri EPUB_URI = Uri.parse("http://www.book.epub");
     private static final Uri HTML_URI = Uri.parse("http://https://phys.org/news/2017-05-iceland-drills-km-volcano-energy.html");
@@ -65,12 +63,18 @@ public class UnitTestSuite{
    Bus mockBus;
     TextView mockTarget;
     Context mockContext;
+    Context mockContext2;
+    Timber mockTimber;
 
    @Test
     public void setMediaUri_ValidUri_ReturnsPDF(){
-       AppSpritzer spritzer = new AppSpritzer(mockBus, mockTarget, PDF_URI);
-       when(mockTarget.getContext().getApplicationContext()).thenReturn(mockContext);
-       assertTrue(mockSpritzer.getMedia() instanceof PDF);
+       //mockSpritzer.setMediaUri(PDF_URI);
+       /*AppSpritzer spritzer = new AppSpritzer(mockBus, mockTarget, PDF_URI);
+       when(mockTarget.getContext().getApplicationContext()).thenReturn(mockContext2);
+       when(mockTarget.getContext()).thenReturn(mockContext);*/
+       SpritzFragment frag = new SpritzFragment();
+       frag.feedMediaUriToSpritzer(PDF_URI);
+       assertTrue(frag.getSpritzer().getMedia() instanceof PDF);
    }
 
     @Test
