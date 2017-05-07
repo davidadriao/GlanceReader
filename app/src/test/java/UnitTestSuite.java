@@ -32,6 +32,7 @@ import com.squareup.otto.Bus;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.text.PDFTextStripper;
 
+
 @RunWith (MockitoJUnitRunner.class)
 public class UnitTestSuite{
 
@@ -47,6 +48,11 @@ public class UnitTestSuite{
 
     @Mock
     AppSpritzer mockSpritzer;
+
+    @Test
+    public void isPDF_ValidURI_ReturnsTrue(){
+        assertThat(mockSpritzer.isPDF(PDF_URI), is(true));
+    }
 
     @Test
     public void fromPDF_ValidURI_GetsText() throws UnsupportedFormatException{

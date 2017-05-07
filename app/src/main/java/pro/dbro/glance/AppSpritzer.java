@@ -91,7 +91,7 @@ public class AppSpritzer extends Spritzer {
         }
     }
 
-    private boolean isPDF(Uri uri){
+    public boolean isPDF(Uri uri){
         boolean uriIsPDF = false;
         String uriAsString = FileUtils.getPath(context, uri);
         String fileTypeExtension = uriAsString.substring(uriAsString.lastIndexOf("."));
